@@ -1,0 +1,1 @@
+0 3 * * * /usr/local/bin/php /var/www/html/index.php getDailyExchanges >> /var/log/cron.log 2>&1
