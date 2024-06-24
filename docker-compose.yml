@@ -1,26 +1,33 @@
 services:
   web:
-    image: nginx:alpine
+    image: nginx:stable-alpine
     volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
       - .:/var/www/html
     ports:
       - 80:80
-      - 3000:443
     environment:
       - NGINX_HOST=${NGINX_HOST}
     restart: always
     depends_on:
-      - php
+      - app
       - mysql
-  php:
+    networks:
+      - app-contact
+  app:
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
     restart: always
+    environment:
+      SERVICE_NAME: app
     volumes:
       - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - .:/var/www/html
+    networks:
+      - app-contact
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   mysql:
     image: mysql:8.0
     restart: always
@@ -34,3 +41,9 @@ services:
     volumes:
       - ./docker/mysql/dump.sql:/docker-entrypoint-initdb.d/dump.sql
       - ./db_data:/var/lib/mysql
+    networks:
+      - app-contact
+
+networks:
+  app-contact:
+    driver: bridge
