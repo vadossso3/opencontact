@@ -13,21 +13,6 @@ class CurrencyController
         $this->currencyService = new CurrencyService();
     }
 
-    public function getDailyExchanges(): bool
-    {
-        return $this->currencyService->getDailyExchanges();
-    }
-
-    public function getAll(): array
-    {
-        return $this->currencyService->getAllExchanges();
-    }
-
-    public function getByDate(string $date)
-    {
-        return $this->currencyService->getExchangesByDate($date);
-    }
-
     public function getCurrencies(): array
     {
         return $this->currencyService->getCurrencies();

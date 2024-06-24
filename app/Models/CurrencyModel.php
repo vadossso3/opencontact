@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\DTO\ExchangeDTO;
 use PDO;
 
 class CurrencyModel extends Model
@@ -27,34 +26,6 @@ class CurrencyModel extends Model
         return $this->getCurrencies();
     }
 
-    public function getAllExchanges(): array
-    {
-        $sth = $this->database->prepare("SELECT * FROM exchange_rates");
-        $sth->execute();
-
-        return $sth->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getExchangesByDate(string $date): array
-    {
-        $sth = $this->database->prepare("SELECT * FROM exchange_rates WHERE date = :date");
-        $date = $this->convertDate($date);
-        $sth->bindParam('date', $date);
-        $sth->execute();
-
-        return $sth->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function saveDailyExchange(ExchangeDTO $exchange): bool
-    {
-        $stmt = $this->database->prepare("INSERT INTO exchange_rates (target_currency_id, date, rate) VALUES (:target_currency_id, :date, :rate)");
-        $stmt->bindParam('target_currency_id', $exchange->targetCurrencyId);
-        $stmt->bindParam('date', $exchange->date);
-        $stmt->bindParam('rate', $exchange->rate);
-
-        return $stmt->execute();
-    }
-
     public function getCurrencyIdByAbbreviation(string $abbreviation): int
     {
         $sth = $this->database->prepare("SELECT id FROM currencies WHERE abbreviation = :abbreviation");
@@ -68,10 +39,5 @@ class CurrencyModel extends Model
         }
 
         return $currency['id'];
-    }
-
-    private function convertDate(string $date): string
-    {
-        return date('Y-m-d', strtotime($date));
     }
 }

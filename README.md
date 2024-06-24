@@ -6,3 +6,10 @@
 6. run in browser /getByDate?date=2024-06-24 for certain date results
 
 cron will take exchange rates at 03:00 AM
+
+Можно было бы добавить:
+1. тесты
+2. больше абстракций
+3. обработчиков ошибок
+4. DI контейнер
+5. интерфейсы, к примеру для разных БД драйверов
