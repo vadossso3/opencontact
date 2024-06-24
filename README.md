@@ -1,3 +1,5 @@
+Потратил около 5-6 ч., немного увлекся. К сожалению, где-то 35% отняла настройка докера
+
 1. docker compose build
 2. docker compose up -d
 3. open mysql container >  mysql -u root -p root < docker-entrypoint-initdb.d/dump.sql
